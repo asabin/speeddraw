@@ -23,6 +23,7 @@ let gameState = {
     lastUsedShapes: []
 };
 
+
 // DOM Elements
 const startScreen = document.getElementById('start-screen');
 const gameScreen = document.getElementById('game-screen');
