@@ -6,7 +6,6 @@
 const SHAPES = [
     { name: 'Square', validate: validateSquare, hint: '4 corners' },
     { name: 'Triangle', validate: validateTriangle, hint: '3 points' },
-    { name: 'Arrow', validate: validateArrow, hint: '3-5 points, elongated' },
     { name: 'Checkmark', validate: validateCheckmark, hint: '3 points: down then up' },
     { name: 'X', validate: validateX, hint: '5 points, cross in center' }
 ];
@@ -113,8 +112,8 @@ function nextRound() {
     pointHint.textContent = gameState.currentShape.hint;
     
     // Decrease time as score increases (minimum 3 seconds)
-    // Timer gets faster: minimum 4 seconds, decrease 0.5 per round
-    gameState.timeLeft = Math.max(4, gameState.baseTime - (gameState.score * 0.5));
+    // Timer gets faster quickly: minimum 4 seconds, decrease 0.75 per round
+    gameState.timeLeft = Math.max(4, gameState.baseTime - (gameState.score * 0.75));
     
     startTimer();
     
