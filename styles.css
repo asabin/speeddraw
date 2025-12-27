@@ -1,0 +1,509 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Fredoka One', cursive;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+.screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* ============================================
+   START SCREEN
+   ============================================ */
+#start-screen {
+    background: linear-gradient(135deg, #FFE066 0%, #FFCC00 50%, #FFB700 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+#start-screen::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+    animation: shimmer 8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(10%, 10%); }
+}
+
+.start-content {
+    text-align: center;
+    z-index: 1;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.game-title {
+    font-size: clamp(4rem, 15vw, 10rem);
+    color: #1a1a2e;
+    text-shadow: 
+        4px 4px 0 #fff,
+        8px 8px 0 rgba(0,0,0,0.1);
+    line-height: 1;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+}
+
+.pencil-icon {
+    font-size: 4rem;
+    animation: bounce 2s ease-in-out infinite;
+    margin-bottom: 30px;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0) rotate(-10deg); }
+    50% { transform: translateY(-15px) rotate(10deg); }
+}
+
+.start-button {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    padding: 20px 60px;
+    background: linear-gradient(180deg, #4A90D9 0%, #2E6AB3 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 
+        0 6px 0 #1E4A7A,
+        0 8px 20px rgba(0,0,0,0.3);
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.start-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 9px 0 #1E4A7A,
+        0 12px 25px rgba(0,0,0,0.35);
+}
+
+.start-button:active {
+    transform: translateY(4px);
+    box-shadow: 
+        0 2px 0 #1E4A7A,
+        0 4px 10px rgba(0,0,0,0.2);
+}
+
+.highscore-display {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.highscore-label {
+    font-size: 1rem;
+    color: #666;
+    letter-spacing: 0.2em;
+}
+
+.highscore-value {
+    font-size: 3rem;
+    color: #1a1a2e;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.5);
+}
+
+/* ============================================
+   GAME SCREEN - NOTEBOOK PAPER
+   ============================================ */
+#game-screen {
+    background: #e8e8e8;
+    perspective: 1500px;
+}
+
+.notebook-page {
+    width: 90%;
+    max-width: 500px;
+    height: 85%;
+    max-height: 750px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 
+        0 0 0 1px rgba(0,0,0,0.05),
+        5px 5px 30px rgba(0,0,0,0.2),
+        inset -2px 0 0 #f0f0f0;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+}
+
+/* Notebook lines */
+.notebook-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        transparent,
+        transparent 27px,
+        #e0e0e0 27px,
+        #e0e0e0 28px
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Red margin line */
+.notebook-page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50px;
+    width: 2px;
+    height: 100%;
+    background: #ffb4b4;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Hole punches */
+.page-lines::before,
+.page-lines::after {
+    content: '';
+    position: absolute;
+    left: 18px;
+    width: 20px;
+    height: 20px;
+    background: #e8e8e8;
+    border-radius: 50%;
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.page-lines::before {
+    top: 15%;
+}
+
+.page-lines::after {
+    bottom: 15%;
+}
+
+.page-content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px 20px 65px;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.score-display, .timer-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.label {
+    font-size: 0.8rem;
+    color: #888;
+    letter-spacing: 0.15em;
+}
+
+.value {
+    font-size: 2rem;
+    color: #333;
+}
+
+.timer-value {
+    color: #2E6AB3;
+    transition: color 0.3s ease;
+}
+
+.timer-value.warning {
+    color: #e74c3c;
+    animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.prompt-section {
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(255, 230, 102, 0.3);
+    border-radius: 10px;
+}
+
+.draw-label {
+    font-size: 1rem;
+    color: #666;
+    margin-right: 10px;
+}
+
+.shape-name {
+    font-family: 'Caveat', cursive;
+    font-size: 2.5rem;
+    color: #1a1a2e;
+}
+
+.hint-text {
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 5px;
+    letter-spacing: 0.1em;
+}
+
+.canvas-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#drawing-canvas {
+    background: transparent;
+    border: 3px dashed #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    touch-action: none;
+}
+
+.button-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.game-button {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.undo-button {
+    background: linear-gradient(180deg, #f39c12 0%, #d68910 100%);
+    color: white;
+    box-shadow: 0 4px 0 #9a6b0a;
+}
+
+.undo-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #9a6b0a;
+}
+
+.undo-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #9a6b0a;
+}
+
+.clear-button {
+    background: linear-gradient(180deg, #95a5a6 0%, #7f8c8d 100%);
+    color: white;
+    box-shadow: 0 4px 0 #5d6d6e;
+}
+
+.clear-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #5d6d6e;
+}
+
+.clear-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #5d6d6e;
+}
+
+.submit-button {
+    background: linear-gradient(180deg, #27ae60 0%, #1e8449 100%);
+    color: white;
+    box-shadow: 0 4px 0 #145a32;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #145a32;
+}
+
+.submit-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #145a32;
+}
+
+/* ============================================
+   PAGE TURN ANIMATION
+   ============================================ */
+.page-turn {
+    position: absolute;
+    top: 7.5%;
+    left: 5%;
+    width: 90%;
+    max-width: 500px;
+    height: 85%;
+    max-height: 750px;
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 100;
+}
+
+.page-turn.animating {
+    opacity: 1;
+    animation: pageTurn 0.6s ease-in-out forwards;
+}
+
+@keyframes pageTurn {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(-180deg);
+    }
+}
+
+.page-turn-front,
+.page-turn-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 5px;
+}
+
+.page-turn-front {
+    background: #fff;
+    background-image: repeating-linear-gradient(
+        transparent,
+        transparent 27px,
+        #e0e0e0 27px,
+        #e0e0e0 28px
+    );
+    box-shadow: 5px 5px 30px rgba(0,0,0,0.3);
+}
+
+.page-turn-back {
+    background: linear-gradient(90deg, #f5f5f5 0%, #fff 100%);
+    transform: rotateY(180deg);
+}
+
+/* ============================================
+   GAME OVER SCREEN
+   ============================================ */
+#gameover-screen {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gameover-content {
+    text-align: center;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.gameover-title {
+    font-size: clamp(2.5rem, 10vw, 5rem);
+    color: white;
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+}
+
+.final-score-section {
+    margin-bottom: 20px;
+}
+
+.final-label {
+    display: block;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.2em;
+    margin-bottom: 5px;
+}
+
+.final-value {
+    display: block;
+    font-size: 4rem;
+    color: white;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+}
+
+.new-record {
+    font-size: 1.5rem;
+    color: #FFE066;
+    margin: 20px 0;
+    animation: celebrate 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes celebrate {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+#gameover-screen .start-button {
+    margin-top: 30px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 500px) {
+    .page-content {
+        padding: 15px 15px 15px 55px;
+    }
+    
+    .game-button {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    
+    .shape-name {
+        font-size: 2rem;
+    }
+}
+
